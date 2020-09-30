@@ -1,0 +1,67 @@
+<div class="row mb-5" *ngIf="topic">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">{{topic.title}}</h3>
+                <h6 class="card-subtitle mb-2 text-muted">{{topic.date | amLocale: 'es' | amTimeAgo}}</h6>
+                <span class="badge badge-primary badge-pill mr-2">
+                    Autor: {{topic.user.name + ' ' + topic.user.surname}}
+                </span>
+                <span class="badge badge-success badge-pill">
+                    Lenguaje: {{topic.lang}}
+                </span>
+                <p class="card-text mt-2">{{topic.content}}</p>
+                <p class="mt-2" *ngIf="topic.code && topic.lang">
+                    <ngx-highlight-js lang="{{topic.lang}}" code="{{topic.code}}"></ngx-highlight-js>
+                </p>
+            </div>
+        </div>
+        <div class="card mt-3" *ngIf="identity">
+            <div class="card-body">
+                <h4 class="card-title">Comenta sobre el tema</h4>
+
+                <div class="alert alert-success" *ngIf="status=='success'">
+                    El comentario se ha registrado correctamente
+                </div>
+
+                <div class="alert alert-danger" *ngIf="status=='error'">
+                    El comentario no se ha podido registrar
+                </div>
+
+                <form #addCommentForm="ngForm" (ngSubmit)="onSubmit(addCommentForm)">
+                    <div class="form-group">
+                        <textarea name="content" #content="ngModel" [(ngModel)]="comment.content" class="form-control"
+                            required></textarea>
+                        <div *ngIf="!content.valid && content.touched" class="invalid-feedback d-block">
+                            El campo contenido es obligatorio
+                        </div>
+                    </div>
+                    <input type="submit" value="Guardar" class="btn btn-success float-right"
+                        [disabled]="!addCommentForm.form.valid" />
+                </form>
+            </div>
+        </div>
+
+        <h4 class="mt-3">Comentarios Realizados</h4>
+        <p *ngIf="!identity">Tienes que identificarte en el foro para comentar
+            <a [routerLink]="['/login']">Identificate aquí</a>
+        </p>
+
+        <div class="alert alert-info mt-3" *ngIf="topic.comments && topic.comments.length == 0">
+            No hay comentarios disponibles para mostrar
+        </div>
+        <div class="list-group mt-3" *ngIf="topic.comments.length > 0">
+            <div *ngFor="let comment of topic.comments" class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{comment.content}}</h5>
+                </div>
+                <p class="mb-2 text-muted">{{comment.date | amLocale: 'es' | amTimeAgo}}</p>
+                <span class="badge badge-primary badge-pill mr-2">
+                    Autor: {{comment.user.name + ' ' + comment.user.surname}}
+                </span>
+                <a (click)="delete(comment._id)" class="btn btn-sm btn-danger float-right"
+                    *ngIf="identity && identity._id == comment.user._id">Borrar</a>
+            </div>
+        </div>
+    </div>
+</div>

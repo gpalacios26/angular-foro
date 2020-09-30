@@ -1,0 +1,14 @@
+<div class="row mb-5">
+    <div class="col-md-12">
+        <div class="jumbotron jumbotron-fluid text-center">
+            <div class="container">
+                <h1 class="display-4">{{page_title}}</h1>
+                <p class="lead">Consulta tus dudas, aprende y ayuda a tus compañeros desarrolladores</p>
+                <p>
+                    <a class="btn btn-primary btn-lg mr-3" [routerLink]="['/temas', '1']">Ver Temas</a>
+                    <a class="btn btn-success btn-lg" [routerLink]="['/panel/crear']" *ngIf="identity">Crear Tema</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="row mb-5">
+    <div class="col-md-12">
+        <h3>{{page_title}}</h3>
+
+        <div class="alert alert-success" *ngIf="!topics">
+            Cargando...
+        </div>
+
+        <div class="alert alert-info mt-3" *ngIf="topics && topics.length == 0">
+            No hay topics disponibles para mostrar
+        </div>
+
+        <div class="list-group mt-3" *ngIf="topics">
+            <a *ngFor="let topic of topics" [routerLink]="['/tema', topic._id]"
+                class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{topic.title}}</h5>
+                    <small class="text-muted">{{topic.date | amLocale: 'es' | amTimeAgo}}</small>
+                </div>
+                <span class="badge badge-primary badge-pill mr-2">
+                    Autor: {{topic.user.name + ' ' + topic.user.surname}}
+                </span>
+                <span class="badge badge-success badge-pill">
+                    Lenguaje: {{topic.lang}}
+                </span>
+            </a>
+        </div>
+
+        <nav aria-label="Page navigation" class="mt-2">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" [routerLink]="['/temas', prev_page]">&laquo;</a>
+                </li>
+                <li class="page-item" [routerLinkActive]="['active']" *ngFor="let num of number_pages">
+                    <a class="page-link" [routerLink]="['/temas', num]">{{num}}</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" [routerLink]="['/temas', next_page]">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
